@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template,redirect
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -34,6 +34,10 @@ class Alert(db.Model):
 # MANUAL DB creation (no decorator!)
 with app.app_context():
     db.create_all()
+
+@app.route('/')
+def map():
+    return render_template('index.html')
 
 @app.route("/api/alerts", methods=["GET"])
 def get_alerts():
