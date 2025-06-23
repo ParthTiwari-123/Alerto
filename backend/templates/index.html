@@ -2,22 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>SafeWalk Route Planner</title>
+  <title>ALERTO</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background-color: #121212; color: white; }
-    #map { height: 93vh; width: 100%; }
-    .top-bar { padding: 10px; text-align: center; background: #1f1f1f; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+    }
+
+    .top-bar {
+      padding: 10px;
+      text-align: center;
+      background: #1f1f1f;
+      color: white;
+    }
+
+    .map-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    #map {
+      height: 85vh;
+      width: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .leaflet-routing-container {
+      background-color: rgba(33, 33, 33, 0.85) !important;
+      color: white !important;
+      font-size: 16px !important;
+      border-radius: 10px;
+      padding: 10px;
+    }
   </style>
 </head>
 <body>
 
   <div class="top-bar">
-    <h2>SafeWalk Route Planner</h2>
+    <h2>Alerto!</h2>
   </div>
 
-  <div id="map"></div>
+  <div class="map-container">
+    <div id="map"></div>
+  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
@@ -26,19 +60,16 @@
   <script>
     let map = L.map('map').setView([28.6139, 77.2090], 13); // Default center
 
-    // Tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Geocoder (search bar)
     L.Control.geocoder().addTo(map);
 
     let currentLocationMarker = null;
     let destinationMarker = null;
     let routingControl = null;
 
-    // Get and show current location
     function locateUser() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(pos => {
@@ -54,7 +85,6 @@
 
           map.setView([lat, lon], 15);
 
-          // Click map to set destination
           map.on('click', function(e) {
             const destLatLng = e.latlng;
 
@@ -71,7 +101,10 @@
                 L.latLng(lat, lon),
                 destLatLng
               ],
-              routeWhileDragging: false
+              routeWhileDragging: false,
+              lineOptions: {
+                styles: [{ color: '#ff6f61', weight: 5 }]
+              }
             }).addTo(map);
           });
 

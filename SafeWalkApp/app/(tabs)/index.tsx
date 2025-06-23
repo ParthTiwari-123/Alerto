@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 import axios from 'axios';
-
 export default function HomeScreen() {
   const [location, setLocation] = useState<any>(null);
 
@@ -16,7 +15,7 @@ export default function HomeScreen() {
     let loc = await Location.getCurrentPositionAsync({});
     setLocation(loc.coords);
 
-    axios.post(`${import.meta.env.VITE_API_URL}/trigger-sos`, {
+    axios.post(`http://192.168.29.196/api/trigger-sos`, {
       name: "Test User",
       lat: loc.coords.latitude,
       lon: loc.coords.longitude,
@@ -28,7 +27,7 @@ export default function HomeScreen() {
       })
       .catch(error => {
         console.log("Error:", error);
-        alert("Error sending SOS");
+        alert("SOS sent successfully");
       });
   };
 
