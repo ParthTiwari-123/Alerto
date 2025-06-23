@@ -15,7 +15,7 @@ export default function HomeScreen() {
     let loc = await Location.getCurrentPositionAsync({});
     setLocation(loc.coords);
 
-    axios.post(`http://192.168.29.196/api/trigger-sos`, {
+   axios.post(`http://192.168.29.196:3000/api/trigger-sos/`,  {
       name: "Test User",
       lat: loc.coords.latitude,
       lon: loc.coords.longitude,
